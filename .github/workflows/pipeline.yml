@@ -21,3 +21,8 @@ jobs:
         run: npm run build
       - name: Test
         run: npm test
+      - name: Deploy to Render
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        run: curl -fsSL "$RENDER_DEPLOY_HOOK"
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
