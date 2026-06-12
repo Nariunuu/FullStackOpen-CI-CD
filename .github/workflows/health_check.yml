@@ -1,0 +1,17 @@
+name: Periodic health check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
+
+jobs:
+  health_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping health endpoint
+        uses: jtalk/url-health-check-action@v4
+        with:
+          url: https://fullstackopen-ci-cd-u897.onrender.com/health
+          max-attempts: 3
+          retry-delay: 10s
