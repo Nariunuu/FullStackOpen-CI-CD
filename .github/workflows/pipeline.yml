@@ -63,6 +63,8 @@ jobs:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v6
         with:
@@ -72,3 +74,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+          INITIAL_VERSION: 0.1.0
