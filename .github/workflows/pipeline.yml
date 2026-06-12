@@ -25,7 +25,7 @@ jobs:
       - name: Test
         run: npm test
       - name: Deploy to Render
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
         run: curl -fsSL "$RENDER_DEPLOY_HOOK"
         env:
           RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
@@ -33,7 +33,7 @@ jobs:
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
     steps:
       - uses: actions/checkout@v6
         with:
